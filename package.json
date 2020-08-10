@@ -1,0 +1,42 @@
+{
+  "name": "graphql-crud-server",
+  "version": "1.0.0",
+  "description": "Graph QL Crud Server Using PostgresQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./",
+    "debug": "nodemon --inspect ./",
+    "stop": "killall node",
+    "seed": "node ./dbSeed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomaslough/graphql-crud-server.git"
+  },
+  "keywords": [
+    "graphql",
+    "crud",
+    "postgres"
+  ],
+  "author": "Thomas Lough",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thomaslough/graphql-crud-server/issues"
+  },
+  "homepage": "https://github.com/thomaslough/graphql-crud-server#readme",
+  "dependencies": {
+    "apollo-datasource": "^0.7.2",
+    "apollo-server-express": "^2.15.1",
+    "bcrypt": "^5.0.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "graphql": "^15.3.0",
+    "graphql-middleware": "^4.0.2",
+    "graphql-shield": "^7.3.2",
+    "isemail": "^3.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg-promise": "^10.5.7",
+    "pgtools": "^0.3.0"
+  }
+}
