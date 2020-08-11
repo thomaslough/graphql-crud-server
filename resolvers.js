@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-const hashPassword = password => {
+const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
@@ -17,16 +17,19 @@ const resolvers = {
       return users;
     },
     user: async (_, { id }, { dataSources }) => {
-      //return { first_name: 'booya' };
       const user = await dataSources.userAPI.getUser({ id });
       return user;
-    }
+    },
   },
   Mutation: {
-    login: async (_, { email, password }, { dataSources }) => {
+    login: async (_, { email, password }, { dataSources, logger }) => {
       const user = await dataSources.userAPI.login({ email });
       if (!user || !comparePassword(user.password, password)) {
-        return JSON.stringify({ error: 'NOT_AUTHORIZED' });
+        logger.log({
+          level: "error",
+          message: "Password compare failed",
+        });
+        return JSON.stringify({ error: "NOT_AUTHORIZED" });
       }
 
       delete user.password;
@@ -35,11 +38,11 @@ const resolvers = {
         ...user,
         token: jwt.sign(
           {
-            'user-auth': { roles: user.roles, permissions: user.permissions }
+            "user-auth": { roles: user.roles, permissions: user.permissions },
           },
-          process.env.BOILER_JWT_SECRET,
-          { algorithm: 'HS256', subject: String(user.id), expiresIn: '1d' }
-        )
+          process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
+          { algorithm: "HS256", subject: String(user.id), expiresIn: "1d" }
+        ),
       };
     },
     addUser: async (_, args, { dataSources }) => {
@@ -54,8 +57,8 @@ const resolvers = {
     updateUser: async (_, args, { dataSources }) => {
       const user = await dataSources.userAPI.updateUser(args);
       return user;
-    }
-  }
+    },
+  },
 };
 
 module.exports = resolvers;

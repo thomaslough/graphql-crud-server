@@ -28,15 +28,23 @@
   "dependencies": {
     "apollo-datasource": "^0.7.2",
     "apollo-server-express": "^2.15.1",
+    "app-root-path": "^3.0.0",
     "bcrypt": "^5.0.0",
+    "clf-date": "^0.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
+    "fs": "0.0.1-security",
     "graphql": "^15.3.0",
     "graphql-middleware": "^4.0.2",
     "graphql-shield": "^7.3.2",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
     "pg-promise": "^10.5.7",
-    "pgtools": "^0.3.0"
+    "pgtools": "^0.3.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   }
 }
