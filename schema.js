@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   #Schema here
@@ -45,7 +45,6 @@ const typeDefs = gql`
     removeUser(id: String!): User!
     updateUser(
       id: String!
-      email: String
       first_name: String
       last_name: String
       role: String

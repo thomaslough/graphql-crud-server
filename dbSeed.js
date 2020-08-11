@@ -1,6 +1,7 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const { createStore } = require('./pgAdaptor');
+const express = require("express");
+const bcrypt = require("bcrypt");
+const { createStore } = require("./pgAdaptor");
+const dotEnv = require("dotenv").config();
 
 const store = createStore();
 const app = express();
@@ -8,7 +9,7 @@ const app = express();
 const port = 5000;
 const now = Date.now();
 
-const hashPassword = password => {
+const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
@@ -39,10 +40,10 @@ INSERT INTO users (
   enabled,
   creator_id )
   VALUES (
-    'admin@electricapple.com',
-    'admin',
-    'admin',
-    '${hashPassword(process.env.BOILER_USER_PASSWORD)}',
+    'admin@email.com',
+    'Jane',
+    'Doe',
+    '${hashPassword(process.env.GRAPHQL_CRUD_SERVER_USER_PASSWORD)}',
     '["ADMIN"]',
     '["read:any_account", "read:own_account"]',
     to_timestamp(${now} / 1000.0),
@@ -62,10 +63,10 @@ INSERT INTO users (
     enabled,
     creator_id )
     VALUES (
-      'user@electricapple.com',
-      'user',
-      'user',
-      '${hashPassword(process.env.BOILER_USER_PASSWORD)}',
+      'user@email.com',
+      'John',
+      'Doe',
+      '${hashPassword(process.env.GRAPHQL_CRUD_SERVER_USER_PASSWORD)}',
       '["USER"]',
       '["read:own_account"]',
       to_timestamp(${now} / 1000.0),
@@ -76,32 +77,23 @@ INSERT INTO users (
   `;
 
 store.db
-  .any(dropQuery, (values = ''))
-  .then(res => {
-    console.log('drop table res', res);
-    return store.db.any(createTableQuery, (values = ''));
+  .any(dropQuery, (values = ""))
+  .then((res) => {
+    console.log("drop table res", res);
+    return store.db.any(createTableQuery, (values = ""));
   })
-  .then(res => {
-    console.log('create table res', res);
-    return store.db.any(populateTableQuery, (values = ''));
+  .then((res) => {
+    console.log("create table res", res);
+    return store.db.any(populateTableQuery, (values = ""));
   })
-  .then(res => {
-    console.log('populate table res', res);
+  .then((res) => {
+    console.log("populate table res", res);
     process.exit();
   })
-  .catch(err => {
-    console.log('drop table err', err);
+  .catch((err) => {
+    console.log("drop table err", err);
   });
 
-/* store.db
-  .any(populateTableQuery, (values = ''))
-  .then((res) => {
-    console.log('populate table res', res);
-  })
-  .catch((err) => {
-    console.log('drop table err', err);
-  }); */
-
 app.listen(port, () => {
-  console.log('🗂 http://localhost:' + port);
+  console.log("🗂 http://localhost:" + port);
 });
