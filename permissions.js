@@ -28,16 +28,14 @@ const isReadingOwnAccount = rule()((parent, { id }, { user }) => {
 
 const permissions = shield({
   Query: {
-    //account: or(and(canReadOwnAccount, isReadingOwnAccount), canReadAnyAccount),
-    //accounts: canReadAnyAccount,
     users: canReadAnyAccount,
-    user: and(canReadAnyAccount, or(canReadOwnAccount, isReadingOwnAccount))
+    user: and(canReadAnyAccount, or(canReadOwnAccount, isReadingOwnAccount)),
   },
   Mutation: {
     addUser: canReadAnyAccount,
     removeUser: canReadAnyAccount,
-    updateUser: canReadAnyAccount
-  }
+    updateUser: canReadAnyAccount,
+  },
 });
 
 module.exports = { permissions };

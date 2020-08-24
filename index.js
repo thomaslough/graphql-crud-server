@@ -1,20 +1,20 @@
-"use strict";
-const express = require("express");
-const { ApolloServer, makeExecutableSchema } = require("apollo-server-express");
-const { applyMiddleware } = require("graphql-middleware");
-const expressJwt = require("express-jwt");
-const path = require("path");
-const fs = require("fs");
-const morgan = require("morgan");
-const UserAPI = require("./datasources/user");
-const typeDefs = require("./schema");
-const resolvers = require("./resolvers");
-const { permissions } = require("./permissions");
-const { createStore } = require("./pgAdaptor");
-const logger = require("./logging");
+'use strict';
+const express = require('express');
+const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
+const { applyMiddleware } = require('graphql-middleware');
+const expressJwt = require('express-jwt');
+const path = require('path');
+const fs = require('fs');
+const morgan = require('morgan');
+const UserAPI = require('./datasources/user');
+const typeDefs = require('./schema');
+const resolvers = require('./resolvers');
+const { permissions } = require('./permissions');
+const { createStore } = require('./pgAdaptor');
+const logger = require('./logging');
 
-const PORT = 4000;
-const apiPath = "/api";
+const PORT = 5000;
+const apiPath = '/api';
 const app = express();
 
 const store = createStore();
@@ -25,12 +25,12 @@ const store = createStore();
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory); */
 
 // setup the winston stream
-app.use(morgan("combined", { stream: logger.stream }));
+app.use(morgan('combined', { stream: logger.stream }));
 
 app.use(function (err, req, res, next) {
   // error level logging
   logger.error(logger.combinedFormat(err, req, res));
-  res.status(err.status || 500).send("Internal server error.");
+  res.status(err.status || 500).send('Internal server error.');
 });
 
 const dataSources = () => ({
@@ -40,7 +40,7 @@ const dataSources = () => ({
 app.use(
   expressJwt({
     secret: process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
-    algorithms: ["HS256"],
+    algorithms: ['HS256'],
     credentialsRequired: false,
   })
 );

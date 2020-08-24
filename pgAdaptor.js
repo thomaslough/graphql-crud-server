@@ -1,5 +1,5 @@
-require("dotenv").config();
-const pgPromise = require("pg-promise");
+wrequire('dotenv').config();
+const pgPromise = require('pg-promise');
 const pgp = pgPromise({});
 
 const config = {
@@ -9,8 +9,6 @@ const config = {
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
 };
-
-console.log("config", config);
 
 module.exports.createStore = () => {
   const db = pgp(config);
