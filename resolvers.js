@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
@@ -26,10 +26,10 @@ const resolvers = {
       const user = await dataSources.userAPI.login({ email });
       if (!user || !comparePassword(user.password, password)) {
         logger.log({
-          level: "error",
-          message: "Password compare failed",
+          level: 'error',
+          message: 'Password compare failed',
         });
-        return JSON.stringify({ error: "NOT_AUTHORIZED" });
+        return JSON.stringify({ error: 'NOT_AUTHORIZED' });
       }
 
       delete user.password;
@@ -38,10 +38,10 @@ const resolvers = {
         ...user,
         token: jwt.sign(
           {
-            "user-auth": { roles: user.roles, permissions: user.permissions },
+            'user-auth': { roles: user.roles, permissions: user.permissions },
           },
           process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
-          { algorithm: "HS256", subject: String(user.id), expiresIn: "1d" }
+          { algorithm: 'HS256', subject: String(user.id), expiresIn: '1d' }
         ),
       };
     },

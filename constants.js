@@ -1,3 +1,3 @@
 module.exports = {
-  UNIQUE_VIOLATION: '23505'
+  UNIQUE_VIOLATION: '23505',
 };

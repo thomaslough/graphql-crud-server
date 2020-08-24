@@ -1,39 +1,39 @@
 //winston-config-rotate.js
-var path = require("path");
-var fs = require("fs");
-var appRoot = require("app-root-path");
-var winston = require("winston");
-var clfDate = require("clf-date");
-require("winston-daily-rotate-file");
+var path = require('path');
+var fs = require('fs');
+var appRoot = require('app-root-path');
+var winston = require('winston');
+var clfDate = require('clf-date');
+require('winston-daily-rotate-file');
 
 // ensure log directory exists
-var logDirectory = path.resolve(`${appRoot}`, ".log");
+var logDirectory = path.resolve(`${appRoot}`, '.log');
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 
 var infofile = new winston.transports.DailyRotateFile({
-  level: "info",
-  filename: path.resolve(logDirectory, "application-%DATE%-info.log"),
-  datePattern: "YYYY-MM-DD-HH",
+  level: 'info',
+  filename: path.resolve(logDirectory, 'application-%DATE%-info.log'),
+  datePattern: 'YYYY-MM-DD-HH',
   zippedArchive: true,
-  maxSize: "100m",
-  maxFiles: "14d", // keep logs for 14 days
+  maxSize: '100m',
+  maxFiles: '14d', // keep logs for 14 days
 });
 
-infofile.on("rotate", function (oldFilename, newFilename) {
-  // do something fun
+infofile.on('rotate', function (oldFilename, newFilename) {
+  // consolidate logs
 });
 
 var errorfile = new winston.transports.DailyRotateFile({
-  level: "error",
-  filename: path.resolve(logDirectory, "application-%DATE%-error.log"),
-  datePattern: "YYYY-MM-DD-HH",
+  level: 'error',
+  filename: path.resolve(logDirectory, 'application-%DATE%-error.log'),
+  datePattern: 'YYYY-MM-DD-HH',
   zippedArchive: true,
-  maxSize: "20m",
-  maxFiles: "30d", // keep logs for 30 days
+  maxSize: '20m',
+  maxFiles: '30d', // keep logs for 30 days
 });
 
-errorfile.on("rotate", function (oldFilename, newFilename) {
-  // do something fun
+errorfile.on('rotate', function (oldFilename, newFilename) {
+  // consolidate logs
 });
 
 const logger = winston.createLogger({
@@ -54,11 +54,11 @@ logger.combinedFormat = function (err, req, res) {
   return `${req.ip} - - [${clfDate(new Date())}] \"${req.method} ${
     req.originalUrl
   } HTTP/${req.httpVersion}\" ${err.status || 500} - ${
-    req.headers["user-agent"]
+    req.headers['user-agent']
   }`;
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),

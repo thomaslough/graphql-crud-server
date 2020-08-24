@@ -1,7 +1,7 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const { createStore } = require("./pgAdaptor");
-const dotEnv = require("dotenv").config();
+const express = require('express');
+const bcrypt = require('bcrypt');
+const { createStore } = require('./pgAdaptor');
+const dotEnv = require('dotenv').config();
 
 const store = createStore();
 const app = express();
@@ -13,9 +13,9 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
-const dropQuery = `DROP TABLE IF EXISTS users`;
-const createTableQuery = `CREATE TABLE IF NOT EXISTS users (
-  id serial PRIMARY KEY, 
+const dropActivityTableQuery = `DROP TABLE IF EXISTS users`;
+const createUserTableQuery = `CREATE TABLE IF NOT EXISTS users (
+  user_id INT GENERATED ALWAYS AS IDENTITY, 
   email VARCHAR ( 255 ),
   first_name VARCHAR ( 255 ),
   last_name VARCHAR ( 255 ),
@@ -25,9 +25,10 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS users (
   enabled BOOLEAN,
   creator_id VARCHAR ( 255 ),
   created TIMESTAMP,
-  last_login TIMESTAMP
+  last_login TIMESTAMP,
+  PRIMARY KEY(user_id)
   )`;
-const populateTableQuery = `
+const populateUserTableQuery = `
 INSERT INTO users (
   email,
   first_name,
@@ -75,25 +76,21 @@ INSERT INTO users (
       '1'
     );
   `;
-
 store.db
-  .any(dropQuery, (values = ""))
+  .any(dropUserTableQuery, (values = ''))
   .then((res) => {
-    console.log("drop table res", res);
-    return store.db.any(createTableQuery, (values = ""));
+    console.log('created users table res', res);
+    return store.db.any(populateUserTableQuery, (values = ''));
   })
   .then((res) => {
-    console.log("create table res", res);
-    return store.db.any(populateTableQuery, (values = ""));
-  })
-  .then((res) => {
-    console.log("populate table res", res);
-    process.exit();
+    console.log('populated table res', res);
+    return store.db.any(createActivityTableQuery, (values = ''));
   })
   .catch((err) => {
-    console.log("drop table err", err);
+    console.log('seed err', err);
+    process.exit();
   });
 
 app.listen(port, () => {
-  console.log("🗂 http://localhost:" + port);
+  console.log('🗂 http://localhost:' + port);
 });

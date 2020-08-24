@@ -1,5 +1,5 @@
-const isEmail = require("isemail");
-const { DataSource } = require("apollo-datasource");
+const isEmail = require('isemail');
+const { DataSource } = require('apollo-datasource');
 
 class UserAPI extends DataSource {
   constructor({ store, logger }) {
@@ -18,7 +18,7 @@ class UserAPI extends DataSource {
         return res[0] ? res[0] : null;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
+        logger.log({ level: 'error', message: JSON.stringify(err) });
         return err;
       });
   }
@@ -32,7 +32,7 @@ class UserAPI extends DataSource {
         return res[0] ? res[0] : null;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
+        logger.log({ level: 'error', message: JSON.stringify(err) });
         return err;
       });
     // query db for user
@@ -47,7 +47,7 @@ class UserAPI extends DataSource {
         return res;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
+        logger.log({ level: 'error', message: JSON.stringify(err) });
         return err;
       });
   }
@@ -73,8 +73,8 @@ class UserAPI extends DataSource {
       args.password,
       args.roles,
       args.permissionvs,
-      "",
-      "",
+      '',
+      '',
       args.enabled,
       args.creator_id,
     ];
@@ -85,8 +85,8 @@ class UserAPI extends DataSource {
         return res;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
-        err.message = err.code || "none";
+        logger.log({ level: 'error', message: JSON.stringify(err) });
+        err.message = err.code || 'none';
         return err;
       });
   }
@@ -100,17 +100,17 @@ class UserAPI extends DataSource {
         return res;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
-        err.message = err.code || "none";
+        logger.log({ level: 'error', message: JSON.stringify(err) });
+        err.message = err.code || 'none';
         return err;
       });
   }
   async updateUser(args) {
-    let builtArgs = "";
+    let builtArgs = '';
     let commaCount = 0;
     for (let key in args) {
-      if (key !== "id" && key !== "email") {
-        builtArgs += `${commaCount > 0 ? "," : ""} ${key}='${args[key]}'`;
+      if (key !== 'id' && key !== 'email') {
+        builtArgs += `${commaCount > 0 ? ',' : ''} ${key}='${args[key]}'`;
         commaCount++;
       }
     }
@@ -123,8 +123,8 @@ class UserAPI extends DataSource {
         return res;
       })
       .catch((err) => {
-        logger.log({ level: "error", message: JSON.stringify(err) });
-        err.message = err.code || "none";
+        logger.log({ level: 'error', message: JSON.stringify(err) });
+        err.message = err.code || 'none';
         return err;
       });
   }
