@@ -1,4 +1,4 @@
-wrequire('dotenv').config();
+require('dotenv').config();
 const pgPromise = require('pg-promise');
 const pgp = pgPromise({});
 

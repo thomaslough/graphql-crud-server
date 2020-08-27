@@ -1,4 +1,4 @@
-const isEmail = require('isemail');
+//const isEmail = require('isemail');
 const { DataSource } = require('apollo-datasource');
 
 class UserAPI extends DataSource {
@@ -22,8 +22,8 @@ class UserAPI extends DataSource {
         return err;
       });
   }
-  async getUser({ id: idArg } = {}) {
-    const query = `SELECT * FROM users WHERE id = '${idArg}'`;
+  async getUser({ user_id: idArg } = {}) {
+    const query = `SELECT * FROM users WHERE user_id = '${idArg}'`;
     const values = [];
 
     return this.store.db
@@ -35,7 +35,6 @@ class UserAPI extends DataSource {
         logger.log({ level: 'error', message: JSON.stringify(err) });
         return err;
       });
-    // query db for user
   }
   async getUsers() {
     const query = `SELECT * FROM users`;
@@ -64,7 +63,7 @@ class UserAPI extends DataSource {
       enabled, 
       creator_id)
       VALUES 
-      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING id`;
+      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING user_id`;
 
     const values = [
       args.email,
@@ -90,8 +89,8 @@ class UserAPI extends DataSource {
         return err;
       });
   }
-  async removeUser({ id: idArg } = {}) {
-    const query = `DELETE FROM users WHERE id = '${idArg}' RETURNING id`;
+  async removeUser({ user_id: idArg } = {}) {
+    const query = `DELETE FROM users WHERE user_id = '${idArg}' RETURNING user_id`;
     const values = [idArg];
 
     return this.store.db
@@ -109,14 +108,14 @@ class UserAPI extends DataSource {
     let builtArgs = '';
     let commaCount = 0;
     for (let key in args) {
-      if (key !== 'id' && key !== 'email') {
+      if (key !== 'user_id' && key !== 'email') {
         builtArgs += `${commaCount > 0 ? ',' : ''} ${key}='${args[key]}'`;
         commaCount++;
       }
     }
-    const query = `UPDATE users SET${builtArgs} WHERE id = '${args.id}' RETURNING id, first_name, last_name, password, roles, permissions, enabled, created, last_login`;
+    const query = `UPDATE users SET${builtArgs} WHERE user_id = '${args.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, created, last_login`;
 
-    const values = [args.id];
+    const values = [args.user_id];
     return this.store.db
       .one(query, values)
       .then((res) => {

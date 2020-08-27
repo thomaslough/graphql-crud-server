@@ -4,7 +4,7 @@ const typeDefs = gql`
   #Schema here
 
   type User {
-    id: ID!
+    user_id: ID!
     email: String
     first_name: String
     last_name: String
@@ -24,7 +24,7 @@ const typeDefs = gql`
     "Get All Users"
     users: [User]!
     "Get single user based on id"
-    user(id: String!): User
+    user(user_id: String!): User
   }
 
   type Mutation {
@@ -42,9 +42,9 @@ const typeDefs = gql`
       created: String
       last_login: String
     ): User!
-    removeUser(id: String!): User!
+    removeUser(user_id: String!): User!
     updateUser(
-      id: String!
+      user_id: String!
       first_name: String
       last_name: String
       role: String

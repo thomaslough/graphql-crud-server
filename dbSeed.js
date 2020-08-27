@@ -13,7 +13,7 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
-const dropActivityTableQuery = `DROP TABLE IF EXISTS users`;
+const dropUserTableQuery = `DROP TABLE IF EXISTS users`;
 const createUserTableQuery = `CREATE TABLE IF NOT EXISTS users (
   user_id INT GENERATED ALWAYS AS IDENTITY, 
   email VARCHAR ( 255 ),
@@ -76,15 +76,20 @@ INSERT INTO users (
       '1'
     );
   `;
+
 store.db
-  .any(dropUserTableQuery, (values = ''))
+  .query(dropUserTableQuery, (values = ''))
   .then((res) => {
-    console.log('created users table res', res);
-    return store.db.any(populateUserTableQuery, (values = ''));
+    console.log('dropped user table res', res);
+    return store.db.query(createUserTableQuery, (values = ''));
   })
   .then((res) => {
-    console.log('populated table res', res);
-    return store.db.any(createActivityTableQuery, (values = ''));
+    console.log('created user table res', res);
+    return store.db.query(populateUserTableQuery, (values = ''));
+  })
+  .then((res) => {
+    console.log('populated user table res', res);
+    process.exit();
   })
   .catch((err) => {
     console.log('seed err', err);
