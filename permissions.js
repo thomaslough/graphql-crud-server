@@ -22,14 +22,14 @@ const canReadOwnAccount = rule()((parent, args, { user }) => {
   return userPermissions.includes('read:own_account');
 });
 
-const isReadingOwnAccount = rule()((parent, { id }, { user }) => {
-  return user && user.sub === id;
+const isReadingOwnAccount = rule()((parent, { user_id }, { user }) => {
+  return user && user.sub === user_id;
 });
 
 const permissions = shield({
   Query: {
     users: canReadAnyAccount,
-    user: and(canReadAnyAccount, or(canReadOwnAccount, isReadingOwnAccount)),
+    user: or(and(canReadOwnAccount, isReadingOwnAccount), canReadAnyAccount),
   },
   Mutation: {
     addUser: canReadAnyAccount,
