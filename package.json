@@ -4,9 +4,9 @@
   "description": "Graph QL Crud Server Using PostgresQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./",
-    "debug": "nodemon --inspect ./",
+    "test": "NODE_ENV=test nodemon  --inspect ./",
+    "start": "NODE_ENV=development nodemon ./",
+    "debug": "NODE_ENV=development nodemon --inspect ./",
     "stop": "killall node",
     "seed": "node ./dbSeed.js"
   },
@@ -43,6 +43,7 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg-promise": "^10.5.7",
+    "pgmock2": "^2.0.3",
     "pgtools": "^0.3.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"

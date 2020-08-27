@@ -13,16 +13,11 @@ const { permissions } = require('./permissions');
 const { createStore } = require('./pgAdaptor');
 const logger = require('./logging');
 
-const PORT = 5000;
+const PORT = 4000;
 const apiPath = '/api';
 const app = express();
 
 const store = createStore();
-
-/* var logDirectory = path.join(__dirname, ".log");
-
-// ensure log directory exists
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory); */
 
 // setup the winston stream
 app.use(morgan('combined', { stream: logger.stream }));

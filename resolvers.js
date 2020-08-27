@@ -16,8 +16,8 @@ const resolvers = {
 
       return users;
     },
-    user: async (_, { id }, { dataSources }) => {
-      const user = await dataSources.userAPI.getUser({ id });
+    user: async (_, { user_id }, { dataSources }) => {
+      const user = await dataSources.userAPI.getUser({ user_id });
       return user;
     },
   },
@@ -27,7 +27,7 @@ const resolvers = {
       if (!user || !comparePassword(user.password, password)) {
         logger.log({
           level: 'error',
-          message: 'Password compare failed',
+          message: `Password compare failed user: ${user}`,
         });
         return JSON.stringify({ error: 'NOT_AUTHORIZED' });
       }
@@ -41,7 +41,7 @@ const resolvers = {
             'user-auth': { roles: user.roles, permissions: user.permissions },
           },
           process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
-          { algorithm: 'HS256', subject: String(user.id), expiresIn: '1d' }
+          { algorithm: 'HS256', subject: String(user.user_id), expiresIn: '1d' }
         ),
       };
     },
@@ -50,8 +50,8 @@ const resolvers = {
       const user = await dataSources.userAPI.addUser(args);
       return user;
     },
-    removeUser: async (_, { id }, { dataSources }) => {
-      const user = await dataSources.userAPI.removeUser({ id });
+    removeUser: async (_, { user_id }, { dataSources }) => {
+      const user = await dataSources.userAPI.removeUser({ user_id });
       return user;
     },
     updateUser: async (_, args, { dataSources }) => {
