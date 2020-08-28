@@ -33,16 +33,24 @@ const resolvers = {
         return JSON.stringify({ error: 'NOT_AUTHORIZED' });
       }
 
-      delete user.password;
+      const responseUser = { ...user };
+      delete responseUser.password;
 
       return {
-        ...user,
+        ...responseUser,
         token: jwt.sign(
           {
-            'user-auth': { roles: user.roles, permissions: user.permissions },
+            'user-auth': {
+              roles: responseUser.roles,
+              permissions: responseUser.permissions,
+            },
           },
           process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
-          { algorithm: 'HS256', subject: String(user.user_id), expiresIn: '1d' }
+          {
+            algorithm: 'HS256',
+            subject: String(responseUser.user_id),
+            expiresIn: '1d',
+          }
         ),
       };
     },
