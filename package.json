@@ -43,9 +43,11 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg-promise": "^10.5.7",
-    "pgmock2": "^2.0.3",
     "pgtools": "^0.3.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
+  },
+  "dev-dependencies": {
+    "pgmock2": "^2.0.3"
   }
 }

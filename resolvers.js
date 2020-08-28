@@ -17,13 +17,14 @@ const resolvers = {
       return users;
     },
     user: async (_, { user_id }, { dataSources }) => {
-      const user = await dataSources.userAPI.getUser({ user_id });
-      return user;
+      const res = await dataSources.userAPI.getUser({ user_id });
+      return res[0] ? res[0] : null;
     },
   },
   Mutation: {
     login: async (_, { email, password }, { dataSources, logger }) => {
-      const user = await dataSources.userAPI.login({ email });
+      const res = await dataSources.userAPI.login({ email });
+      const user = res[0] ? res[0] : null;
       if (!user || !comparePassword(user.password, password)) {
         logger.log({
           level: 'error',

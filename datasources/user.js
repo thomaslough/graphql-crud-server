@@ -1,6 +1,17 @@
 //const isEmail = require('isemail');
 const { DataSource } = require('apollo-datasource');
 
+/* const dbRequest = (store, query, values, logger, type = 'any') => {
+  return store.db[type](query, values)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      logger.log({ level: 'error', message: JSON.stringify(err) });
+      return err;
+    });
+}; */
+
 class UserAPI extends DataSource {
   constructor({ store, logger }) {
     super();
@@ -11,44 +22,19 @@ class UserAPI extends DataSource {
   async login({ email: emailArg } = {}) {
     const query = `UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE email = '${emailArg}' RETURNING *`;
     const values = [];
-
-    return this.store.db
-      .any(query, values)
-      .then((res) => {
-        return res[0] ? res[0] : null;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        return err;
-      });
+    return this.store.dbQuery(query, values, this.logger);
   }
   async getUser({ user_id: idArg } = {}) {
     const query = `SELECT * FROM users WHERE user_id = '${idArg}'`;
     const values = [];
 
-    return this.store.db
-      .any(query, values)
-      .then((res) => {
-        return res[0] ? res[0] : null;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        return err;
-      });
+    return this.store.dbQuery(query, values, this.logger);
   }
   async getUsers() {
     const query = `SELECT * FROM users`;
     const values = [];
 
-    return this.store.db
-      .any(query, values)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        return err;
-      });
+    return this.store.dbQuery(query, values, this.logger);
   }
   async addUser(args) {
     const query = `INSERT INTO users(
@@ -78,31 +64,13 @@ class UserAPI extends DataSource {
       args.creator_id,
     ];
 
-    return this.store.db
-      .one(query, values)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        err.message = err.code || 'none';
-        return err;
-      });
+    return this.store.dbQuery(query, values, this.logger, 'one');
   }
   async removeUser({ user_id: idArg } = {}) {
     const query = `DELETE FROM users WHERE user_id = '${idArg}' RETURNING user_id`;
     const values = [idArg];
 
-    return this.store.db
-      .one(query, values)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        err.message = err.code || 'none';
-        return err;
-      });
+    return this.store.dbQuery(query, values, this.logger, 'one');
   }
   async updateUser(args) {
     let builtArgs = '';
@@ -114,18 +82,9 @@ class UserAPI extends DataSource {
       }
     }
     const query = `UPDATE users SET${builtArgs} WHERE user_id = '${args.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, created, last_login`;
-
     const values = [args.user_id];
-    return this.store.db
-      .one(query, values)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        logger.log({ level: 'error', message: JSON.stringify(err) });
-        err.message = err.code || 'none';
-        return err;
-      });
+
+    return this.store.dbQuery(query, values, this.logger, 'one');
   }
 }
 

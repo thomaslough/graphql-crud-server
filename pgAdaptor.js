@@ -12,5 +12,17 @@ const config = {
 
 module.exports.createStore = () => {
   const db = pgp(config);
-  return { db };
+
+  const dbQuery = (query, values, logger, type = 'any') => {
+    return db[type](query, values)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        logger.log({ level: 'error', message: JSON.stringify(err) });
+        return err;
+      });
+  };
+
+  return { db, dbQuery };
 };
