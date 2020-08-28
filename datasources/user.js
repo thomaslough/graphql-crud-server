@@ -1,17 +1,6 @@
 //const isEmail = require('isemail');
 const { DataSource } = require('apollo-datasource');
 
-/* const dbRequest = (store, query, values, logger, type = 'any') => {
-  return store.db[type](query, values)
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      logger.log({ level: 'error', message: JSON.stringify(err) });
-      return err;
-    });
-}; */
-
 class UserAPI extends DataSource {
   constructor({ store, logger }) {
     super();
