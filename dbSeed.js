@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { createStore } = require('./pgAdaptor');
-const dotEnv = require('dotenv').config();
 
 const store = createStore();
 const app = express();

@@ -4,7 +4,8 @@
   "description": "Graph QL Crud Server Using PostgresQL",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test nodemon  --inspect ./",
+    "test": "NODE_ENV=test node node_modules/.bin/jest --runInBand --watch --verbose false",
+    "test:debug": "NODE_ENV=test node --inspect node_modules/.bin/jest --runInBand --watch --verbose true",
     "start": "NODE_ENV=development nodemon ./",
     "debug": "NODE_ENV=development nodemon --inspect ./",
     "stop": "killall node",
@@ -27,7 +28,7 @@
   "homepage": "https://github.com/thomaslough/graphql-crud-server#readme",
   "dependencies": {
     "apollo-datasource": "^0.7.2",
-    "apollo-server-express": "^2.15.1",
+    "apollo-server-express": "^2.17.0",
     "app-root-path": "^3.0.0",
     "bcrypt": "^5.0.0",
     "clf-date": "^0.2.0",
@@ -35,17 +36,36 @@
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "fs": "0.0.1-security",
-    "graphql": "^15.3.0",
     "graphql-middleware": "^4.0.2",
-    "graphql-shield": "^7.3.2",
+    "graphql-shield": "^7.3.5",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
-    "pg-promise": "^10.5.7",
+    "pg-promise": "^10.6.1",
     "pgtools": "^0.3.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/plugin-transform-spread": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
+    "@babel/runtime": "^7.11.2",
+    "apollo-boost": "^0.4.9",
+    "cross-fetch": "^3.0.5",
+    "graphql": "^15.3.0",
+    "jest": "^26.4.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__utils"
+    ],
+    "globalSetup": "./test-config/globalSetup.js"
+  }
 }

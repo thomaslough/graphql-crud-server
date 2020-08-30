@@ -26,6 +26,7 @@ app.use(function (err, req, res, next) {
   // error level logging
   logger.error(logger.combinedFormat(err, req, res));
   res.status(err.status || 500).send('Internal server error.');
+  next();
 });
 
 const dataSources = () => ({
@@ -44,8 +45,8 @@ const schema = applyMiddleware(
   makeExecutableSchema({
     typeDefs,
     resolvers,
-  })
-  //permissions
+  }),
+  permissions
 );
 
 const server = new ApolloServer({
@@ -59,8 +60,12 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app, path: apiPath });
 
-app.listen({ port: PORT }, () =>
-  console.log(
-    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-  )
-);
+if (process.env.NODE_ENV !== 'test') {
+  app.listen({ port: PORT }, () =>
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    )
+  );
+}
+
+module.exports = { app, server };
