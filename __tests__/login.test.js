@@ -1,12 +1,9 @@
 import 'cross-fetch/polyfill';
-import { gql } from 'apollo-boost';
-import { getClient } from '../test-utils/getClient';
-
-const client = getClient();
+import { request } from '../test-utils/requestClient';
 
 describe('Should test account logins', () => {
   it('should be able to login as admin', async () => {
-    const loginQuery = gql`
+    const query = `
       mutation {
         login(email: "admin@email.com", password: "password") {
           user_id
@@ -22,9 +19,7 @@ describe('Should test account logins', () => {
       }
     `;
 
-    const { data } = await client.mutate({
-      mutation: loginQuery,
-    });
+    const { data } = await request(query);
 
     expect(data.login).toExist;
     expect(data.login.first_name).toBe('Jane');
@@ -41,7 +36,7 @@ describe('Should test account logins', () => {
   });
 
   it('should be able to login as user', async () => {
-    const loginQuery = gql`
+    const query = `
       mutation {
         login(email: "user@email.com", password: "password") {
           user_id
@@ -57,9 +52,7 @@ describe('Should test account logins', () => {
       }
     `;
 
-    const { data } = await client.mutate({
-      mutation: loginQuery,
-    });
+    const { data } = await request(query);
 
     expect(data.login).toExist;
     expect(data.login.first_name).toBe('John');
@@ -74,7 +67,7 @@ describe('Should test account logins', () => {
   });
 
   it('should not be able to login with bad email cred', async () => {
-    const loginQuery = gql`
+    const query = `
       mutation {
         login(email: "xxx@email.com", password: "password") {
           user_id
@@ -91,9 +84,7 @@ describe('Should test account logins', () => {
     `;
 
     try {
-      await client.mutate({
-        mutation: loginQuery,
-      });
+      await request(query);
     } catch (err) {
       expect(err.graphQLErrors).toExist;
       expect(err.graphQLErrors).toBeArray;
@@ -104,7 +95,7 @@ describe('Should test account logins', () => {
   });
 
   it('should not be able to login with bad password cred', async () => {
-    const loginQuery = gql`
+    const query = `
       mutation {
         login(email: "admin@email.com", password: "xxxxxxx") {
           user_id
@@ -121,9 +112,7 @@ describe('Should test account logins', () => {
     `;
 
     try {
-      await client.mutate({
-        mutation: loginQuery,
-      });
+      await request(query);
     } catch (err) {
       expect(err.graphQLErrors).toExist;
       expect(err.graphQLErrors).toBeArray;
