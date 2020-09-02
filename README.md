@@ -20,9 +20,9 @@
   ```
   POSTGRES_HOST=localhost
   POSTGRES_PORT=5432
-  POSTGRES_DB=databaseName
-  POSTGRES_USER=postgres
-  POSTGRES_PASSWORD=postgres
+  POSTGRES_DB={databaseName}
+  POSTGRES_USER={postgres user}
+  POSTGRES_PASSWORD={postgres password}
   ```
 - \$ npm run seed
 
@@ -30,6 +30,6 @@
 
 \$ npm start
 
-## Tests
+## Run Tests
 
-TBD
+\$ npm test
