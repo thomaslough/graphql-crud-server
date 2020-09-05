@@ -37,7 +37,6 @@ const typeDefs = gql`
       password: String!
       roles: String!
       enabled: Boolean!
-      permissions: String!
       creator_id: String!
       created: String
       last_login: String

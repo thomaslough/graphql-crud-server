@@ -3,7 +3,7 @@ import { request } from '../test-utils/requestClient';
 
 const userData = {};
 
-describe('Should test users', () => {
+describe('Should test admin account', () => {
   it('should be able to login as admin', async () => {
     const query = `
       mutation {
@@ -18,7 +18,7 @@ describe('Should test users', () => {
     userData.token = data.login.token;
   });
 
-  it('should be able to get users', async () => {
+  it('should be able to get users as admin', async () => {
     const query = `
       query {
         users {
@@ -40,7 +40,7 @@ describe('Should test users', () => {
     expect(data.users.length).toBeGreaterThan(1);
   });
 
-  it('should be able to get a user', async () => {
+  it('should be able to get a user as admin', async () => {
     const query = `
       query {
         user (user_id: "2") {
@@ -58,14 +58,14 @@ describe('Should test users', () => {
 
     expect(data.user).toBeDefined();
     expect(data.user.user_id).toEqual('2');
-    expect(data.user.first_name).toEqual('John');
-    expect(data.user.last_name).toEqual('Doe');
+    expect(data.user.first_name).toBeDefined();
+    expect(data.user.last_name).toBeDefined();
     expect(data.user.email).toEqual('user@email.com');
     expect(data.user.roles).toEqual('["USER"]');
     expect(data.user.permissions).toEqual('["read:own_account"]');
   });
 
-  it('should be able to create a user', async () => {
+  it('should be able to create a user as admin', async () => {
     const query = `
       mutation {
         addUser (
@@ -73,8 +73,7 @@ describe('Should test users', () => {
           first_name: "Spike", 
           last_name: "Punch",
           password: "Cake",
-          roles: "['USER']", 
-          permissions: "['read:own_account']",
+          roles: "USER",
           enabled: true, 
           creator_id: "1"
           ) {
@@ -91,7 +90,7 @@ describe('Should test users', () => {
     expect(res.data.addUser.user_id).toBeDefined();
     userData.createdUserId = res.data.addUser.user_id;
   });
-  it('should be able to update a user', async () => {
+  it('should be able to update a user as admin', async () => {
     const query = `
     mutation {
       updateUser (user_id: "${userData.createdUserId}", first_name: "Updated First Name", last_name: "Updated Last Name") {
@@ -113,7 +112,7 @@ describe('Should test users', () => {
     expect(res.data.updateUser.first_name).toEqual('Updated First Name');
     expect(res.data.updateUser.last_name).toEqual('Updated Last Name');
   });
-  it('should be able to delete created user', async () => {
+  it('should be able to delete created user as admin', async () => {
     const query = `
     mutation {
       removeUser (user_id: "${userData.createdUserId}") {

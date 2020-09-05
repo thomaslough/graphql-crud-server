@@ -5,7 +5,7 @@ describe('Should test account logins', () => {
   it('should be able to login as admin', async () => {
     const query = `
       mutation {
-        login(email: "admin@email.com", password: "password") {
+        login(email: "admin@email.com", password:"password") {
           user_id
           first_name
           last_name
@@ -20,7 +20,6 @@ describe('Should test account logins', () => {
     `;
 
     const { data } = await request(query);
-
     expect(data.login).toExist;
     expect(data.login.first_name).toBe('Jane');
     expect(data.login.last_name).toBe('Doe');
@@ -55,8 +54,8 @@ describe('Should test account logins', () => {
     const { data } = await request(query);
 
     expect(data.login).toExist;
-    expect(data.login.first_name).toBe('John');
-    expect(data.login.last_name).toBe('Doe');
+    expect(data.login.first_name).not.toBeUndefined();
+    expect(data.login.last_name).not.toBeUndefined();
     expect(data.login.email).toBe('user@email.com');
     expect(data.login.roles).toBe('["USER"]');
     expect(data.login.permissions).toBe('["read:own_account"]');

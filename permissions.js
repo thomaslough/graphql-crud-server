@@ -1,4 +1,5 @@
 const { and, or, rule, shield } = require('graphql-shield');
+const constants = require('./constants');
 
 function getPermissions(user) {
   if (user && user['user-auth']) {
@@ -7,6 +8,23 @@ function getPermissions(user) {
   return [];
 }
 
+const canEditFields = (args, user) => {
+  const adminOnlyField = ['roles', 'enabled'];
+  const canUpdate = true;
+  adminOnlyField.map((item, index) => {
+    for (let key in args) {
+      if (
+        key === adminOnlyField[index] &&
+        user['user-auth'].roles !== `${constants.ADMIN}`
+      ) {
+        canUpdate = false;
+      }
+    }
+    return item;
+  });
+  return canUpdate;
+};
+
 const isAuthenticated = rule()((parent, args, { user }) => {
   return user !== null;
 });
@@ -14,16 +32,19 @@ const isAuthenticated = rule()((parent, args, { user }) => {
 const canReadAnyAccount = rule()((parent, args, { user }) => {
   const userPermissions = getPermissions(user);
 
-  return userPermissions.includes('read:any_account');
+  return userPermissions.includes(constants.READ_ANY_ACCOUNT);
 });
 
 const canReadOwnAccount = rule()((parent, args, { user }) => {
   const userPermissions = getPermissions(user);
-  return userPermissions.includes('read:own_account');
+  return (
+    userPermissions.includes(constants.READ_OWN_ACCOUNT) &&
+    canEditFields(args, user)
+  );
 });
 
-const isReadingOwnAccount = rule()((parent, { user_id }, { user }) => {
-  return user && user.sub === user_id;
+const isReadingOwnAccount = rule()((parent, args, { user }) => {
+  return user && user.sub === args.user_id && canEditFields(args, user);
 });
 
 const permissions = shield({
@@ -34,7 +55,10 @@ const permissions = shield({
   Mutation: {
     addUser: canReadAnyAccount,
     removeUser: canReadAnyAccount,
-    updateUser: canReadAnyAccount,
+    updateUser: or(
+      and(canReadOwnAccount, isReadingOwnAccount),
+      canReadAnyAccount
+    ),
   },
 });
 
