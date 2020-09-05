@@ -1,5 +1,7 @@
 //const isEmail = require('isemail');
 const { DataSource } = require('apollo-datasource');
+const constants = require('../constants');
+const utils = require('../utils');
 
 class UserAPI extends DataSource {
   constructor({ store, logger }) {
@@ -16,8 +18,8 @@ class UserAPI extends DataSource {
   async getUser({ user_id: idArg } = {}) {
     const query = `SELECT * FROM users WHERE user_id = '${idArg}'`;
     const values = [];
-
-    return this.store.dbQuery(query, values, this.logger);
+    const result = this.store.dbQuery(query, values, this.logger);
+    return result;
   }
   async getUsers() {
     const query = `SELECT * FROM users`;
@@ -45,8 +47,8 @@ class UserAPI extends DataSource {
       args.first_name,
       args.last_name,
       args.password,
-      args.roles,
-      args.permissionvs,
+      utils.formatRoles(args.roles),
+      utils.formatPermissions(args.roles),
       '',
       '',
       args.enabled,
@@ -62,16 +64,23 @@ class UserAPI extends DataSource {
     return this.store.dbQuery(query, values, this.logger, 'one');
   }
   async updateUser(args) {
+    const argsCopy = { ...args };
     let builtArgs = '';
     let commaCount = 0;
-    for (let key in args) {
+
+    if (args.roles) {
+      argsCopy.roles = utils.formatRoles(args.roles);
+      argsCopy.permissions = utils.formatPermissions(args.roles);
+    }
+
+    for (let key in argsCopy) {
       if (key !== 'user_id' && key !== 'email') {
-        builtArgs += `${commaCount > 0 ? ',' : ''} ${key}='${args[key]}'`;
+        builtArgs += `${commaCount > 0 ? ',' : ''} ${key}='${argsCopy[key]}'`;
         commaCount++;
       }
     }
-    const query = `UPDATE users SET${builtArgs} WHERE user_id = '${args.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, created, last_login`;
-    const values = [args.user_id];
+    const query = `UPDATE users SET${builtArgs} WHERE user_id = '${argsCopy.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, created, last_login`;
+    const values = [argsCopy.user_id];
 
     return this.store.dbQuery(query, values, this.logger, 'one');
   }

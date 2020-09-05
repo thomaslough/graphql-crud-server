@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { createStore } = require('./pgAdaptor');
+const constants = require('./constants');
+const utils = require('./utils');
 
 const store = createStore();
 const app = express();
@@ -44,8 +46,8 @@ INSERT INTO users (
     'Jane',
     'Doe',
     '${hashPassword(process.env.GRAPHQL_CRUD_SERVER_USER_PASSWORD)}',
-    '["ADMIN"]',
-    '["read:any_account", "read:own_account"]',
+    '${utils.formatRoles(constants.ADMIN)}',
+    '${utils.formatPermissions(constants.ADMIN)}',
     to_timestamp(${now} / 1000.0),
     to_timestamp(${now} / 1000.0),
     true,
@@ -67,8 +69,8 @@ INSERT INTO users (
       'John',
       'Doe',
       '${hashPassword(process.env.GRAPHQL_CRUD_SERVER_USER_PASSWORD)}',
-      '["USER"]',
-      '["read:own_account"]',
+      '${utils.formatRoles(constants.USER)}',
+      '${utils.formatPermissions(constants.USER)}',
       to_timestamp(${now} / 1000.0),
       to_timestamp(${now} / 1000.0),
       true,

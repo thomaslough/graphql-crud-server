@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const utils = require('./utils');
+const constants = require('./constants');
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
@@ -30,7 +32,7 @@ const resolvers = {
           level: 'error',
           message: `Password compare failed user: ${user}`,
         });
-        return JSON.stringify({ error: 'NOT_AUTHORIZED' });
+        return JSON.stringify({ error: constants.NOT_AUTHORIZED });
       }
 
       const responseUser = { ...user };
@@ -54,7 +56,15 @@ const resolvers = {
         ),
       };
     },
-    addUser: async (_, args, { dataSources }) => {
+    addUser: async (_, args, { dataSources, logger }) => {
+      if (!utils.validateValue(args.roles)) {
+        logger.log({
+          level: 'error',
+          message: `wrong roles value format: ${args.roles}`,
+        });
+        return JSON.stringify({ error: constants.REQUEST_ERROR });
+      }
+
       args.password = hashPassword(args.password);
       const user = await dataSources.userAPI.addUser(args);
       return user;
@@ -63,7 +73,14 @@ const resolvers = {
       const user = await dataSources.userAPI.removeUser({ user_id });
       return user;
     },
-    updateUser: async (_, args, { dataSources }) => {
+    updateUser: async (_, args, { dataSources, logger }) => {
+      if (args.roles && !utils.validateValue(args.roles)) {
+        logger.log({
+          level: 'error',
+          message: `wrong roles value format: ${args.roles}`,
+        });
+        return JSON.stringify({ error: constants.REQUEST_ERROR });
+      }
       const user = await dataSources.userAPI.updateUser(args);
       return user;
     },

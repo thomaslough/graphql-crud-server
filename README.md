@@ -33,3 +33,7 @@
 ## Run Tests
 
 \$ npm test
+
+## GrapghQL Playground
+
+http://localhost:4000/api
