@@ -3,8 +3,7 @@ const express = require('express');
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 const { applyMiddleware } = require('graphql-middleware');
 const expressJwt = require('express-jwt');
-const path = require('path');
-const fs = require('fs');
+const { buildFederatedSchema } = require('@apollo/federation');
 const morgan = require('morgan');
 const UserAPI = require('./datasources/user');
 const typeDefs = require('./schema');
@@ -42,10 +41,11 @@ app.use(
 );
 
 const schema = applyMiddleware(
-  makeExecutableSchema({
+  /*makeExecutableSchema({
     typeDefs,
     resolvers,
-  }),
+  }),*/
+  buildFederatedSchema([{ typeDefs: typeDefs[0], resolvers: resolvers[0] }]),
   permissions
 );
 
