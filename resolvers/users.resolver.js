@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const utils = require('./utils');
-const constants = require('./constants');
+const utils = require('../utils');
+const constants = require('../constants');
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
@@ -11,7 +11,7 @@ const comparePassword = (hashPassword, password) => {
   return bcrypt.compareSync(password, hashPassword);
 };
 
-const resolvers = {
+const users = {
   Query: {
     users: async (_, __, { dataSources }) => {
       const users = await dataSources.userAPI.getUsers();
@@ -87,4 +87,4 @@ const resolvers = {
   },
 };
 
-module.exports = resolvers;
+module.exports = users;
