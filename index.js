@@ -13,7 +13,7 @@ const { permissions } = require('./permissions');
 const { createStore } = require('./pgAdaptor');
 const logger = require('./logging');
 
-const PORT = 4000;
+const PORT = 5000;
 const apiPath = '/api';
 const app = express();
 
