@@ -1,7 +1,7 @@
 require('@babel/register');
 
 const { app, server } = require('..');
-const PORT = 4000;
+const PORT = 4001;
 
 module.exports = async () => {
   if (!global.testingStarted) {
