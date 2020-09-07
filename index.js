@@ -13,7 +13,6 @@ const { createStore } = require('./pgAdaptor');
 const logger = require('./logging');
 
 const PORT = 5000;
-const apiPath = '/api';
 const app = express();
 
 const store = createStore();
@@ -41,30 +40,24 @@ app.use(
 );
 
 const schema = applyMiddleware(
-  /*makeExecutableSchema({
-    typeDefs,
-    resolvers,
-  }),*/
   buildFederatedSchema([{ typeDefs: typeDefs[0], resolvers: resolvers[0] }]),
   permissions
 );
 
 const server = new ApolloServer({
-  schema: schema,
+  schema,
   dataSources,
   context: ({ req }) => {
-    const user = req.user ? req.user : null;
+    const user = req.headers.user ? JSON.parse(req.headers.user) : null;
     return { user, logger };
   },
 });
 
-server.applyMiddleware({ app, path: apiPath });
+server.applyMiddleware({ app });
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen({ port: PORT }, () =>
-    console.log(
-      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-    )
+    console.log(`🚀 Server ready at http://localhost:${PORT}`)
   );
 }
 
