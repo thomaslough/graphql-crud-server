@@ -7,7 +7,7 @@ const utils = require('./utils');
 const store = createStore();
 const app = express();
 
-const port = 5000;
+const port = 9000;
 const now = Date.now();
 
 const hashPassword = (password) => {
