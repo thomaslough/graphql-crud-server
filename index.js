@@ -48,7 +48,14 @@ const server = new ApolloServer({
   schema,
   dataSources,
   context: ({ req }) => {
-    const user = req.headers.user ? JSON.parse(req.headers.user) : null;
+    let user = null;
+
+    if (req.headers.user) {
+      user = JSON.parse(req.headers.user);
+    } else {
+      user = req.user;
+    }
+
     return { user, logger };
   },
 });
