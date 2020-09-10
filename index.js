@@ -9,7 +9,7 @@ const UserAPI = require('./datasources/user');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const { permissions } = require('./permissions');
-const { createStore } = require('./pgAdaptor');
+const { createStore, getDB, setDB } = require('./pgAdaptor');
 const logger = require('./logging');
 
 const PORT = 5000;
@@ -49,11 +49,20 @@ const server = new ApolloServer({
   dataSources,
   context: ({ req }) => {
     let user = null;
+    let dbName = process.env.POSTGRES_DB;
 
     if (req.headers.user) {
       user = JSON.parse(req.headers.user);
-    } else {
+    } else if (req.user) {
       user = req.user;
+    }
+
+    if (req.headers['db-name']) {
+      dbName = req.headers['db-name'];
+    }
+
+    if (!getDB()) {
+      setDB(dbName);
     }
 
     return { user, logger };

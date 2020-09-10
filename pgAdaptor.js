@@ -10,7 +10,9 @@ const config = {
   password: process.env.POSTGRES_PASSWORD,
 };
 
-module.exports.createStore = () => {
+let dbName = null;
+
+const createStore = () => {
   const db = pgp(config);
 
   const dbQuery = (query, values, logger, type = 'any') => {
@@ -26,3 +28,13 @@ module.exports.createStore = () => {
 
   return { db, dbQuery };
 };
+
+const getDB = () => {
+  return dbName || false;
+};
+
+const setDB = (dbName) => {
+  config.database = dbName;
+};
+
+module.exports = { createStore, getDB, setDB };

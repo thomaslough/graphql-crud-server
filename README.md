@@ -2,7 +2,7 @@
 
 ## What is it?
 
-### A GraphQL CRUD dev server using express, grapghql, postgres jwt and graphql-shield
+### A GraphQL CRUD dev server using Express, Apollo Grapghql, Postgres JWT and Graphql-shield. This project uses Apollo federation with a gateway for use as a microservice.
 
 ## install
 
@@ -26,9 +26,13 @@
   ```
 - \$ npm run seed
 
-## Run Development Server
+## Run development server
 
 \$ npm start
+
+## Run development server with gateway
+
+\$ npm run gateway
 
 ## Run Tests
 

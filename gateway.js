@@ -16,10 +16,11 @@ const gateway = new ApolloGateway({
           'user',
           context.user ? JSON.stringify(context.user) : null
         );
+        request.http.headers.set('db-name', 'graphql-crud');
       },
     });
   },
-});
+}); //.setRequestHeader("X-Hello", "World", false);
 
 app.use(
   expressJwt({
@@ -34,7 +35,6 @@ const server = new ApolloServer({
   subscriptions: false,
   context: ({ req }) => {
     const user = req.user ? req.user : null;
-    console.log('gateway >>>>>>>>>>>>>>>>>>>>>>>>>>>>>', user);
     return { user };
   },
 });
