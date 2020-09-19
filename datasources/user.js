@@ -40,15 +40,16 @@ class UserAPI extends DataSource {
       enabled, 
       creator_id)
       VALUES 
-      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING user_id`;
+      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING user_id
+      `;
 
     const values = [
       args.email,
       args.first_name,
       args.last_name,
       args.password,
-      utils.formatRoles(args.roles),
-      utils.formatPermissions(args.roles),
+      utils.formatRoles(constants.USER),
+      utils.formatPermissions(constants.USER),
       '',
       '',
       args.enabled,

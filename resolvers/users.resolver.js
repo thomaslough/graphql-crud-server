@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const Isemail = require('isemail');
 const utils = require('../utils');
 const constants = require('../constants');
 
@@ -57,10 +58,10 @@ const users = {
       };
     },
     addUser: async (_, args, { dataSources, logger }) => {
-      if (!utils.validateValue(args.roles)) {
+      if (!Isemail.validate(args.email)) {
         logger.log({
           level: 'error',
-          message: `wrong roles value format: ${args.roles}`,
+          message: `Bad email format: ${args.email}`,
         });
         return JSON.stringify({ error: constants.REQUEST_ERROR });
       }

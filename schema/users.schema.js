@@ -35,7 +35,6 @@ const users = gql`
       first_name: String!
       last_name: String!
       password: String!
-      roles: String!
       enabled: Boolean!
       creator_id: String!
       created: String
