@@ -53,7 +53,6 @@ const permissions = shield({
     user: or(and(canReadOwnAccount, isReadingOwnAccount), canReadAnyAccount),
   },
   Mutation: {
-    addUser: canReadAnyAccount,
     removeUser: canReadAnyAccount,
     updateUser: or(
       and(canReadOwnAccount, isReadingOwnAccount),
