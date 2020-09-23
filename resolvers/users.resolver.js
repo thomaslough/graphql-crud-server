@@ -33,7 +33,7 @@ const users = {
           level: 'error',
           message: `Password compare failed user: ${user}`,
         });
-        return JSON.stringify({ error: constants.NOT_AUTHORIZED });
+        return JSON.stringify({ error: constants.BAD_AUTHORIZED });
       }
 
       const responseUser = { ...user };

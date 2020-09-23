@@ -6,6 +6,7 @@ const constants = {
   READ_ANY_ACCOUNT: `["read:any_account", "read:own_account"]`,
   NOT_AUTHORIZED: 'NOT_AUTHORIZED',
   REQUEST_ERROR: 'REQUEST_ERROR',
+  BAD_AUTH: 'BAD_AUTH',
 };
 
 constants['USER_PERMISSIONS'] = `["${constants.READ_OWN_ACCOUNT}"]`;
