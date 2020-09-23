@@ -29,17 +29,24 @@ const users = {
       const res = await dataSources.userAPI.login({ email });
       const user = res[0] ? res[0] : null;
       if (!user || !comparePassword(user.password, password)) {
+        return {
+          __typename: 'BadUserCredsError',
+          message: constants.BAD_AUTH_ERROR,
+        };
+      }
+      /* if (!user || !comparePassword(user.password, password)) {
         logger.log({
           level: 'error',
           message: `Password compare failed user: ${user}`,
         });
-        return JSON.stringify({ error: constants.BAD_AUTHORIZED });
-      }
+        return { error: constants.NOT_AUTHORIZED };
+      } */
 
       const responseUser = { ...user };
       delete responseUser.password;
 
       return {
+        __typename: 'User',
         ...responseUser,
         token: jwt.sign(
           {

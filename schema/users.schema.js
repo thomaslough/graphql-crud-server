@@ -10,7 +10,7 @@ const users = gql`
     last_name: String
     roles: String
     permissions: String
-    enabled: Boolean!
+    enabled: Boolean
     creator_id: String
     message: String
     service: String
@@ -20,15 +20,29 @@ const users = gql`
     token: String
   }
 
+  interface Error {
+    message: String!
+  }
+
+  type BadUserCredsError implements Error {
+    message: String!
+  }
+
+  type UnauthorizedError implements Error {
+    message: String!
+  }
+
+  union UserResponse = User | BadUserCredsError | UnauthorizedError
+
   type Query {
     "Get All Users"
-    users: [User]!
+    users: [UserResponse]!
     "Get single user based on id"
-    user(user_id: String!): User
+    user(user_id: String!): UserResponse!
   }
 
   type Mutation {
-    login(email: String!, password: String!): User!
+    login(email: String!, password: String!): UserResponse!
 
     addUser(
       email: String!
@@ -39,15 +53,15 @@ const users = gql`
       creator_id: String!
       created: String
       last_login: String
-    ): User!
-    removeUser(user_id: String!): User!
+    ): UserResponse!
+    removeUser(user_id: String!): UserResponse!
     updateUser(
       user_id: String!
       first_name: String
       last_name: String
       roles: String
       enabled: Boolean
-    ): User!
+    ): UserResponse!
   }
 `;
 
