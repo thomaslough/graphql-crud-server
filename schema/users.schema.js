@@ -36,9 +36,9 @@ const users = gql`
 
   type Query {
     "Get All Users"
-    users: [UserResponse]!
+    users: [User]!
     "Get single user based on id"
-    user(user_id: String!): UserResponse!
+    user(user_id: String!): User!
   }
 
   type Mutation {
@@ -53,15 +53,15 @@ const users = gql`
       creator_id: String!
       created: String
       last_login: String
-    ): UserResponse!
-    removeUser(user_id: String!): UserResponse!
+    ): User!
+    removeUser(user_id: String!): User!
     updateUser(
       user_id: String!
       first_name: String
       last_name: String
       roles: String
       enabled: Boolean
-    ): UserResponse!
+    ): User!
   }
 `;
 
