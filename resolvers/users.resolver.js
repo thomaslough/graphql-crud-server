@@ -53,6 +53,9 @@ const users = {
             'user-auth': {
               roles: responseUser.roles,
               permissions: responseUser.permissions,
+              email: responseUser.email,
+              firstName: responseUser.first_name,
+              lastName: responseUser.last_name,
             },
           },
           process.env.GRAPHQL_CRUD_SERVER_JWT_SECRET,
@@ -75,7 +78,16 @@ const users = {
 
       args.password = hashPassword(args.password);
       const user = await dataSources.userAPI.addUser(args);
-      return user;
+      if (user.code === '23505') {
+        return {
+          __typename: 'UserExists',
+          message: constants.USER_EXISTS,
+        };
+      }
+      return {
+        __typename: 'User',
+        ...user,
+      };
     },
     removeUser: async (_, { user_id }, { dataSources }) => {
       const user = await dataSources.userAPI.removeUser({ user_id });

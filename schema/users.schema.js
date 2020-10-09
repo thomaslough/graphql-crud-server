@@ -32,7 +32,11 @@ const users = gql`
     message: String!
   }
 
-  union UserResponse = User | BadUserCredsError | UnauthorizedError
+  type UserExists implements Error {
+    message: String!
+  }
+
+  union UserResponse = User | BadUserCredsError | UnauthorizedError | UserExists
 
   type Query {
     "Get All Users"
@@ -53,7 +57,7 @@ const users = gql`
       creator_id: String!
       created: String
       last_login: String
-    ): User!
+    ): UserResponse!
     removeUser(user_id: String!): User!
     updateUser(
       user_id: String!
