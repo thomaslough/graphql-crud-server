@@ -50,7 +50,7 @@ const users = {
         ...responseUser,
         token: jwt.sign(
           {
-            'user-auth': {
+            data: {
               roles: responseUser.roles,
               permissions: responseUser.permissions,
               email: responseUser.email,
