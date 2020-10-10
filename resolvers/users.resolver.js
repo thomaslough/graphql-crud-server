@@ -69,7 +69,7 @@ const users = {
       };
     },
     addUser: async (_, args, { dataSources, logger }) => {
-      if (!utils.isEmail(email)) {
+      if (!utils.isEmail(args.email)) {
         logger.log({
           level: 'error',
           message: `Bad email format: ${args.email}`,

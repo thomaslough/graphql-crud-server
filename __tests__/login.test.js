@@ -4,8 +4,10 @@ import { request } from '../test-utils/requestClient';
 describe('Should test account logins', () => {
   it('should be able to login as admin', async () => {
     const query = `
-      mutation {
-        login(email: "admin@email.com", password:"password") {
+    mutation {
+      login(email: "admin@email.com", password:"password") {
+            __typename
+          ... on User {
           user_id
           first_name
           last_name
@@ -15,6 +17,14 @@ describe('Should test account logins', () => {
           token
           created
           last_login
+          error
+          }
+          ... on BadUserCredsError {
+              message
+          }
+          ... on BadFormat {
+              message
+          }
         }
       }
     `;
@@ -36,8 +46,10 @@ describe('Should test account logins', () => {
 
   it('should be able to login as user', async () => {
     const query = `
-      mutation {
-        login(email: "user@email.com", password: "password") {
+    mutation {
+      login(email: "user@email.com", password:"password") {
+           __typename
+          ... on User {
           user_id
           first_name
           last_name
@@ -47,6 +59,11 @@ describe('Should test account logins', () => {
           token
           created
           last_login
+          error
+          }
+          ... on BadUserCredsError {
+              message
+          }
         }
       }
     `;
@@ -67,8 +84,10 @@ describe('Should test account logins', () => {
 
   it('should not be able to login with bad email cred', async () => {
     const query = `
-      mutation {
-        login(email: "xxx@email.com", password: "password") {
+    mutation {
+      login(email: "xxxxxxx@email.com", password:"password") {
+           __typename
+          ... on User {
           user_id
           first_name
           last_name
@@ -78,39 +97,75 @@ describe('Should test account logins', () => {
           token
           created
           last_login
+          error
+          }
+          ... on BadUserCredsError {
+              message
+          }
         }
       }
     `;
 
-    try {
+    const { data } = await request(query);
+    expect(data.login).toExist;
+    expect(data.login.__typename).toExist;
+    expect(data.login.__typename).toBe('BadUserCredsError');
+    expect(data.login.message).toExist;
+    expect(data.login.message).toBe('Wrong username or password');
+    /* try {
       await request(query);
     } catch (err) {
       expect(err.graphQLErrors).toExist;
       expect(err.graphQLErrors).toBeArray;
       expect(err.graphQLErrors[0]).toExist;
       expect(err.graphQLErrors[0].message).toExist;
-      expect(err.graphQLErrors[0].message).toContain('Not Authorised!');
+      exp ect(err.graphQLErrors[0].message).toContain('Not Authorised!');
+    }*/
+
+    /*
+{
+    "data": {
+        "login": {
+            "__typename": "BadUserCredsError",
+            "message": "Wrong username or password"
+        }
     }
+}
+*/
   });
 
   it('should not be able to login with bad password cred', async () => {
     const query = `
-      mutation {
-        login(email: "admin@email.com", password: "xxxxxxx") {
-          user_id
-          first_name
-          last_name
-          email
-          roles
-          permissions
-          token
-          created
-          last_login
+    mutation {
+      login(email: "bad@email.com", password:"password") {
+          __typename
+        ... on User {
+        user_id
+        first_name
+        last_name
+        email
+        roles
+        permissions
+        token
+        created
+        last_login
+        error
+        }
+        ... on BadUserCredsError {
+            message
         }
       }
+    }
     `;
 
-    try {
+    const { data } = await request(query);
+    expect(data.login).toExist;
+    expect(data.login.__typename).toExist;
+    expect(data.login.__typename).toBe('BadUserCredsError');
+    expect(data.login.message).toExist;
+    expect(data.login.message).toBe('Wrong username or password');
+
+    /* try {
       await request(query);
     } catch (err) {
       expect(err.graphQLErrors).toExist;
@@ -120,6 +175,6 @@ describe('Should test account logins', () => {
       expect(err.graphQLErrors[0].message).toContain(
         'Cannot return null for non-nullable field'
       );
-    }
+    } */
   });
 });
