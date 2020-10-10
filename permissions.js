@@ -2,8 +2,8 @@ const { and, or, rule, shield } = require('graphql-shield');
 const constants = require('./constants');
 
 function getPermissions(user) {
-  if (user && user['user-auth']) {
-    return user['user-auth'].permissions;
+  if (user && user.data) {
+    return user.data.permissions;
   }
   return [];
 }
@@ -15,7 +15,7 @@ const canEditFields = (args, user) => {
     for (let key in args) {
       if (
         key === adminOnlyField[index] &&
-        user['user-auth'].roles !== `${constants.ADMIN}`
+        user.data.roles !== `${constants.ADMIN}`
       ) {
         canUpdate = false;
       }
@@ -54,6 +54,7 @@ const permissions = shield({
   },
   Mutation: {
     removeUser: canReadAnyAccount,
+    addUser: canReadAnyAccount,
     updateUser: or(
       and(canReadOwnAccount, isReadingOwnAccount),
       canReadAnyAccount

@@ -8,6 +8,7 @@ const constants = {
   REQUEST_ERROR: 'REQUEST_ERROR',
   BAD_AUTH_ERROR: 'Wrong username or password',
   USER_EXISTS: 'USER_EXISTS',
+  BAD_FORMAT: 'BAD_FORMAT',
 };
 
 constants['USER_PERMISSIONS'] = `["${constants.READ_OWN_ACCOUNT}"]`;

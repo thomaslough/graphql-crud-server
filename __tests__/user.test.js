@@ -6,16 +6,31 @@ const userData = {};
 describe('Should test user as user', () => {
   it('should be able to login as user', async () => {
     const query = `
-      mutation {
-        login(email: "user@email.com", password: "password") {
+    mutation {
+      login(email: "user@email.com", password:"password") {
+           __typename
+          ... on User {
+          user_id
+          first_name
+          last_name
+          email
+          roles
+          permissions
           token
+          created
+          last_login
+          error
+          }
+          ... on BadUserCredsError {
+              message
+          }
         }
       }
     `;
 
-    const { data } = await request(query);
-    expect(data).toBeDefined();
-    userData.token = data.login.token;
+    const res = await request(query);
+    expect(res.data).toBeDefined();
+    userData.token = res.data.login.token;
   });
 
   it('should not be able to get users as user', async () => {
@@ -136,15 +151,28 @@ describe('Should test user as user', () => {
     const query = `
       mutation {
         addUser (
-          email: "spike.punch@email.com",
-          first_name: "Spike", 
-          last_name: "Punch",
-          password: "Cake",
-          roles: "USER",
+          email: "some.user@email.com",
+          first_name: "New", 
+          last_name: "User",
+          password: "password",
           enabled: true, 
-          creator_id: "1"
+          creator_id: "1",
           ) {
-          user_id
+          __typename
+          ... on User {
+              user_id
+              first_name
+              last_name
+              email
+              roles
+              permissions
+              token
+              created
+              last_login
+          }
+          ... on UserExists {
+              message
+          }
         }
       }
     `;

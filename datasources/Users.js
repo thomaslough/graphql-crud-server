@@ -40,7 +40,7 @@ class UserAPI extends DataSource {
       enabled, 
       creator_id)
       VALUES 
-      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING user_id
+      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING *
       `;
 
     const values = [

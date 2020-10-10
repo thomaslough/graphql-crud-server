@@ -36,7 +36,16 @@ const users = gql`
     message: String!
   }
 
-  union UserResponse = User | BadUserCredsError | UnauthorizedError | UserExists
+  type BadFormat implements Error {
+    message: String!
+  }
+
+  union UserResponse =
+      User
+    | BadUserCredsError
+    | UnauthorizedError
+    | UserExists
+    | BadFormat
 
   type Query {
     "Get All Users"

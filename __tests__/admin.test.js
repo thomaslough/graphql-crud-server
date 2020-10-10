@@ -1,14 +1,30 @@
 import 'cross-fetch/polyfill';
 import { request } from '../test-utils/requestClient';
+const utils = require('../utils');
 
 const userData = {};
 
 describe('Should test admin account', () => {
   it('should be able to login as admin', async () => {
     const query = `
-      mutation {
-        login(email: "admin@email.com", password: "password") {
+    mutation {
+      login(email: "admin@email.com", password:"password") {
+        __typename
+          ... on User {
+          user_id
+          first_name
+          last_name
+          email
+          roles
+          permissions
           token
+          created
+          last_login
+          error
+          }
+          ... on BadUserCredsError {
+              message
+          }
         }
       }
     `;
@@ -67,19 +83,32 @@ describe('Should test admin account', () => {
 
   it('should be able to create a user as admin', async () => {
     const query = `
-      mutation {
-        addUser (
-          email: "spike.punch@email.com",
-          first_name: "Spike", 
-          last_name: "Punch",
-          password: "Cake",
-          roles: "USER",
-          enabled: true, 
-          creator_id: "1"
-          ) {
-          user_id
+    mutation {
+      addUser (
+        email: "${utils.getRandomCode()}@email.com",
+        first_name: "New", 
+        last_name: "User",
+        password: "password",
+        enabled: true, 
+        creator_id: "1"
+        ) {
+        __typename
+        ... on User {
+            user_id
+            first_name
+            last_name
+            email
+            roles
+            permissions
+            token
+            created
+            last_login
+        }
+        ... on UserExists {
+            message
         }
       }
+    }
     `;
 
     const res = await request(query, userData.token);
