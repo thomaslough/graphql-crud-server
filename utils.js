@@ -17,4 +17,10 @@ const formatPermissions = (roles) => {
   return roleValues[roles];
 };
 
-module.exports = { validateValue, formatRoles, formatPermissions };
+const isEmail = (email) => {
+  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+    email
+  );
+};
+
+module.exports = { validateValue, formatRoles, formatPermissions, isEmail };
