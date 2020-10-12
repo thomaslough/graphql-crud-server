@@ -18,7 +18,7 @@ describe('Should test admin account', () => {
           roles
           permissions
           token
-          created
+          creation_date
           last_login
           error
           }
@@ -44,7 +44,7 @@ describe('Should test admin account', () => {
           email
           roles
           permissions
-          created
+          creation_date
           last_login
         }
       }
@@ -89,8 +89,7 @@ describe('Should test admin account', () => {
         first_name: "New", 
         last_name: "User",
         password: "password",
-        enabled: true, 
-        creator_id: "1"
+        enabled: true
         ) {
         __typename
         ... on User {
@@ -101,7 +100,7 @@ describe('Should test admin account', () => {
             roles
             permissions
             token
-            created
+            creation_date
             last_login
         }
         ... on UserExists {

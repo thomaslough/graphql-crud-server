@@ -35,12 +35,11 @@ class UserAPI extends DataSource {
       password, 
       roles,
       permissions,
-      created, 
+      creation_date, 
       last_login, 
-      enabled, 
-      creator_id)
+      enabled)
       VALUES 
-      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10) RETURNING *
+      ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9) RETURNING *
       `;
 
     const values = [
@@ -53,9 +52,7 @@ class UserAPI extends DataSource {
       '',
       '',
       args.enabled,
-      args.creator_id,
     ];
-
     return this.store.dbQuery(query, values, this.logger, 'one');
   }
   async removeUser({ user_id: idArg } = {}) {
@@ -80,7 +77,7 @@ class UserAPI extends DataSource {
         commaCount++;
       }
     }
-    const query = `UPDATE users SET${builtArgs} WHERE user_id = '${argsCopy.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, created, last_login`;
+    const query = `UPDATE users SET${builtArgs} WHERE user_id = '${argsCopy.user_id}' RETURNING user_id, first_name, last_name, email, password, roles, permissions, enabled, creation_date, last_login`;
     const values = [argsCopy.user_id];
 
     return this.store.dbQuery(query, values, this.logger, 'one');

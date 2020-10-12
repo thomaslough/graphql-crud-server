@@ -24,8 +24,7 @@ const createUserTableQuery = `CREATE TABLE IF NOT EXISTS users (
   roles VARCHAR ( 255 ),
   permissions VARCHAR ( 255 ),
   enabled BOOLEAN,
-  creator_id VARCHAR ( 255 ),
-  created TIMESTAMP,
+  creation_date TIMESTAMP,
   last_login TIMESTAMP,
   PRIMARY KEY(user_id)
   )`;
@@ -37,10 +36,9 @@ INSERT INTO users (
   password,
   roles,
   permissions,
-  created,
+  creation_date,
   last_login,
-  enabled,
-  creator_id )
+  enabled)
   VALUES (
     'admin@email.com',
     'Jane',
@@ -50,8 +48,7 @@ INSERT INTO users (
     '${utils.formatPermissions(constants.ADMIN)}',
     to_timestamp(${now} / 1000.0),
     to_timestamp(${now} / 1000.0),
-    true,
-    '1'
+    true
   );
  INSERT INTO users (
     email,
@@ -60,10 +57,9 @@ INSERT INTO users (
     password,
     roles,
     permissions,
-    created,
+    creation_date,
     last_login,
-    enabled,
-    creator_id )
+    enabled)
     VALUES (
       'user@email.com',
       'John',
@@ -73,8 +69,7 @@ INSERT INTO users (
       '${utils.formatPermissions(constants.USER)}',
       to_timestamp(${now} / 1000.0),
       to_timestamp(${now} / 1000.0),
-      true,
-      '1'
+      true
     );
   `;
 

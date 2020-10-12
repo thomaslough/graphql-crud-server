@@ -15,7 +15,7 @@ describe('Should test account logins', () => {
           roles
           permissions
           token
-          created
+          creation_date
           last_login
           error
           }
@@ -39,7 +39,7 @@ describe('Should test account logins', () => {
       '["read:any_account", "read:own_account"]'
     );
     expect(data.login.token).not.toBeUndefined();
-    expect(data.login.created).not.toBeUndefined();
+    expect(data.login.creation_date).not.toBeUndefined();
     expect(data.login.last_login).not.toBeUndefined();
     expect(data.login.password).toBeUndefined();
   });
@@ -57,7 +57,7 @@ describe('Should test account logins', () => {
           roles
           permissions
           token
-          created
+          creation_date
           last_login
           error
           }
@@ -77,7 +77,7 @@ describe('Should test account logins', () => {
     expect(data.login.roles).toBe('["USER"]');
     expect(data.login.permissions).toBe('["read:own_account"]');
     expect(data.login.token).not.toBeUndefined();
-    expect(data.login.created).not.toBeUndefined();
+    expect(data.login.creation_date).not.toBeUndefined();
     expect(data.login.last_login).not.toBeUndefined();
     expect(data.login.password).toBeUndefined();
   });
@@ -95,7 +95,7 @@ describe('Should test account logins', () => {
           roles
           permissions
           token
-          created
+          creation_date
           last_login
           error
           }
@@ -147,7 +147,7 @@ describe('Should test account logins', () => {
         roles
         permissions
         token
-        created
+        creation_date
         last_login
         error
         }
