@@ -11,10 +11,9 @@ const users = gql`
     roles: String
     permissions: String
     enabled: Boolean
-    creator_id: String
     message: String
     service: String
-    created: String
+    creation_date: String
     last_login: String
     error: String
     token: String
@@ -63,8 +62,7 @@ const users = gql`
       last_name: String!
       password: String!
       enabled: Boolean!
-      creator_id: String!
-      created: String
+      creation_date: String
       last_login: String
     ): UserResponse!
     removeUser(user_id: String!): User!

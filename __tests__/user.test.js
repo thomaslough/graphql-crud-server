@@ -17,7 +17,7 @@ describe('Should test user as user', () => {
           roles
           permissions
           token
-          created
+          creation_date
           last_login
           error
           }
@@ -43,7 +43,7 @@ describe('Should test user as user', () => {
           email
           roles
           permissions
-          created
+          creation_date
           last_login
         }
       }
@@ -66,10 +66,9 @@ describe('Should test user as user', () => {
           email
           roles
           permissions
-          created
+          creation_date
           last_login
           enabled
-          creator_id
         }
       }
     `;
@@ -155,8 +154,7 @@ describe('Should test user as user', () => {
           first_name: "New", 
           last_name: "User",
           password: "password",
-          enabled: true, 
-          creator_id: "1",
+          enabled: true
           ) {
           __typename
           ... on User {
@@ -167,7 +165,7 @@ describe('Should test user as user', () => {
               roles
               permissions
               token
-              created
+              creation_date
               last_login
           }
           ... on UserExists {
