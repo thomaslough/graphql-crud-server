@@ -6,7 +6,7 @@ const constants = {
   READ_ANY_ACCOUNT: `["read:any_account", "read:own_account"]`,
   NOT_AUTHORIZED_ERROR: 'NOT_AUTHORIZED_ERROR',
   REQUEST_ERROR: 'REQUEST_ERROR',
-  BAD_AUTH_ERROR: 'Wrong username or password',
+  BAD_AUTH_ERROR: 'BAD_AUTH_ERROR',
   USER_EXISTS: 'USER_EXISTS',
   BAD_FORMAT: 'BAD_FORMAT',
 };

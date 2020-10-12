@@ -111,27 +111,7 @@ describe('Should test account logins', () => {
     expect(data.login.__typename).toExist;
     expect(data.login.__typename).toBe('BadUserCredsError');
     expect(data.login.message).toExist;
-    expect(data.login.message).toBe('Wrong username or password');
-    /* try {
-      await request(query);
-    } catch (err) {
-      expect(err.graphQLErrors).toExist;
-      expect(err.graphQLErrors).toBeArray;
-      expect(err.graphQLErrors[0]).toExist;
-      expect(err.graphQLErrors[0].message).toExist;
-      exp ect(err.graphQLErrors[0].message).toContain('Not Authorised!');
-    }*/
-
-    /*
-{
-    "data": {
-        "login": {
-            "__typename": "BadUserCredsError",
-            "message": "Wrong username or password"
-        }
-    }
-}
-*/
+    expect(data.login.message).toBe('BAD_AUTH_ERROR');
   });
 
   it('should not be able to login with bad password cred', async () => {
@@ -163,18 +143,6 @@ describe('Should test account logins', () => {
     expect(data.login.__typename).toExist;
     expect(data.login.__typename).toBe('BadUserCredsError');
     expect(data.login.message).toExist;
-    expect(data.login.message).toBe('Wrong username or password');
-
-    /* try {
-      await request(query);
-    } catch (err) {
-      expect(err.graphQLErrors).toExist;
-      expect(err.graphQLErrors).toBeArray;
-      expect(err.graphQLErrors[0]).toExist;
-      expect(err.graphQLErrors[0].message).toExist;
-      expect(err.graphQLErrors[0].message).toContain(
-        'Cannot return null for non-nullable field'
-      );
-    } */
+    expect(data.login.message).toBe('BAD_AUTH_ERROR');
   });
 });
