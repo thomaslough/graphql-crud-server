@@ -111,7 +111,7 @@ describe('Should test account logins', () => {
     expect(data.login.__typename).toExist;
     expect(data.login.__typename).toBe('BadUserCredsError');
     expect(data.login.message).toExist;
-    expect(data.login.message).toBe('BAD_AUTH_ERROR');
+    expect(data.login.message).toBe('BAD_AUTH');
   });
 
   it('should not be able to login with bad password cred', async () => {
@@ -143,6 +143,6 @@ describe('Should test account logins', () => {
     expect(data.login.__typename).toExist;
     expect(data.login.__typename).toBe('BadUserCredsError');
     expect(data.login.message).toExist;
-    expect(data.login.message).toBe('BAD_AUTH_ERROR');
+    expect(data.login.message).toBe('BAD_AUTH');
   });
 });

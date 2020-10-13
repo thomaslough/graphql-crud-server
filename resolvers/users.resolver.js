@@ -27,7 +27,7 @@ const users = {
     login: async (_, { email, password }, { dataSources, logger }) => {
       const res = await dataSources.userAPI.login({ email });
       const user = res[0] ? res[0] : null;
-
+      
       if (!utils.isEmail(email)) {
         logger.log({
           level: 'error',
@@ -39,7 +39,7 @@ const users = {
       if (!user || !comparePassword(user.password, password)) {
         return {
           __typename: 'BadUserCredsError',
-          message: constants.BAD_AUTH_ERROR,
+          message: constants.BAD_AUTH,
         };
       }
 

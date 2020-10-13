@@ -1,6 +1,10 @@
 'use strict';
 const express = require('express');
-const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
+const {
+  ApolloServer,
+  makeExecutableSchema,
+  AuthenticationError,
+} = require('apollo-server-express');
 const { applyMiddleware } = require('graphql-middleware');
 const expressJwt = require('express-jwt');
 const { buildFederatedSchema } = require('@apollo/federation');
@@ -11,8 +15,10 @@ const resolvers = require('./resolvers');
 const { permissions } = require('./permissions');
 const { createStore, getDB, setDB } = require('./pgAdaptor');
 const logger = require('./logging');
+const constants = require('./constants');
 
-const PORT = 5000;
+const PORT = 4000;
+const path = '/api';
 const app = express();
 
 const store = createStore();
@@ -67,13 +73,22 @@ const server = new ApolloServer({
 
     return { user, logger };
   },
+  formatError(err) {
+    if (err.message && err.message.startsWith('NOT_AUTHORIZED')) {
+      const erroRes = {
+        __typename: 'UnauthorizedError',
+        message: constants.NOT_AUTHORIZED,
+      };
+      return erroRes;
+    }
+  },
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, path, path });
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen({ port: PORT }, () =>
-    console.log(`🚀 Server ready at http://localhost:${PORT}`)
+    console.log(`🚀 Server ready at http://localhost:${PORT}${path}`)
   );
 }
 
