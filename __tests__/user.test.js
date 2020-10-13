@@ -53,7 +53,7 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
 
   it('should be able to get its own user data as user', async () => {
@@ -122,7 +122,7 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
 
   it('should not be able to get anothers user data as user', async () => {
@@ -143,7 +143,7 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
 
   it('should not be able to create a user as user', async () => {
@@ -179,7 +179,7 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
   it('should not be able to update any other user as user', async () => {
     const query = `
@@ -199,7 +199,7 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
   it('should not be able to delete user as user', async () => {
     const query = `
@@ -214,6 +214,6 @@ describe('Should test user as user', () => {
     expect(errors).toBeDefined();
     expect(errors[0]).toBeDefined();
     expect(errors[0].message).toBeDefined();
-    expect(errors[0].message).toEqual('Not Authorised!');
+    expect(errors[0].message).toEqual('NOT_AUTHORIZED');
   });
 });

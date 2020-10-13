@@ -74,7 +74,7 @@ const server = new ApolloServer({
     return { user, logger };
   },
   formatError(err) {
-    if (err.message && err.message.startsWith('Not Authorised!')) {
+    if (err.message && err.message.startsWith('NOT_AUTHORIZED')) {
       const erroRes = {
         __typename: 'UnauthorizedError',
         message: constants.NOT_AUTHORIZED,
