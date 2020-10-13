@@ -4,9 +4,9 @@ const constants = {
   USER: 'USER',
   READ_OWN_ACCOUNT: `["read:own_account"]`,
   READ_ANY_ACCOUNT: `["read:any_account", "read:own_account"]`,
-  NOT_AUTHORIZED_ERROR: 'NOT_AUTHORIZED_ERROR',
+  NOT_AUTHORIZED: 'NOT_AUTHORIZED',
   REQUEST_ERROR: 'REQUEST_ERROR',
-  BAD_AUTH_ERROR: 'BAD_AUTH_ERROR',
+  BAD_AUTH: 'BAD_AUTH',
   USER_EXISTS: 'USER_EXISTS',
   BAD_FORMAT: 'BAD_FORMAT',
 };
