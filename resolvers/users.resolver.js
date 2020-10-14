@@ -69,6 +69,7 @@ const users = {
       };
     },
     addUser: async (_, args, { dataSources, logger }) => {
+      console.log('addUser >>>>>>>>>>>>');
       if (!utils.isEmail(args.email)) {
         logger.log({
           level: 'error',
